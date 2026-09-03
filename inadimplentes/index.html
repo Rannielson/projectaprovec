@@ -61,13 +61,12 @@ function render(){const term=q.value.trim().toLowerCase(), st=status.value, bf=b
 document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');current=btn.dataset.tab;q.value='';boletos.value='all';fillStatus();render()}));q.addEventListener('input',render);status.addEventListener('change',render);boletos.addEventListener('change',render);
 document.getElementById('csv').addEventListener('click',()=>{const esc=v=>'"'+String(v??'').replaceAll('"','""')+'"';const header=['Placa','Ultimo pagamento','Dias','Situacao','Boletos abertos','Cod veiculo','Vencimento','Chassi se sem placa'];const lines=[header.map(esc).join(';'),...visible.map(r=>[r.placa,r.data,r.dias,r.situacao,r.abertos,r.cod,r.venc,r.chassi||''].map(esc).join(';'))];const blob=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`aprovec_${current}_2026-09-03.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)});
 async function init(){
-  const inadFiles=['inad-1.json','inad-2.json','inad-3.json','inad-4.json','inad-5.json'];
-  const cancelFiles=['cancel-1.json','cancel-2.json','cancel-3.json','cancel-4.json','cancel-5.json'];
-  const responses=await Promise.all([...inadFiles,...cancelFiles].map(f=>fetch(f)));
-  const chunks=await Promise.all(responses.map(r=>r.json()));
-  DATA.inad=chunks.slice(0,inadFiles.length).flat();
+  const [aRes,bRes,cRes]=await Promise.all([fetch('inad-a.json'),fetch('inad-b.json'),fetch('cancel-all.json')]);
+  const [a,b,c]=await Promise.all([aRes.json(),bRes.json(),cRes.json()]);
+  const expand=r=>({placa:r[0],data:r[1],dias:r[2],situacao:r[3],abertos:r[4],cod:r[5],venc:r[6],chassi:r[7]});
+  DATA.inad=[...a,...b].map(expand);
   DATA.crit=DATA.inad.filter(r=>r.abertos===0);
-  DATA.cancel=chunks.slice(inadFiles.length).flat();
+  DATA.cancel=c.map(expand);
   fillStatus();render();
 }
 init().catch(err=>{document.getElementById('tbody').innerHTML='<tr><td colspan=9>Erro ao carregar os dados.</td></tr>'; console.error(err)});
