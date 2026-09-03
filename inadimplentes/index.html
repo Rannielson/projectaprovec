@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>APROVEC — Auditoria de inadimplentes</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#152033;--muted:#687386;--line:#e3e8ef;--navy:#102a43;--blue:#1d4ed8;--blue2:#eaf1ff;--red:#b42318;--redbg:#fee4e2;--amber:#b54708;--amberbg:#fffaeb;--green:#067647;--greenbg:#ecfdf3;--slate:#475467;--slatebg:#f2f4f7}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
+.wrap{max-width:1240px;margin:auto;padding:28px 18px 54px} .hero{background:linear-gradient(135deg,#102a43,#1e3a8a);color:#fff;border-radius:22px;padding:28px;box-shadow:0 18px 50px rgba(16,42,67,.14)}
+h1{margin:0 0 8px;font-size:clamp(27px,4vw,42px);letter-spacing:-.035em} .hero p{margin:0;color:#dbeafe;max-width:900px;line-height:1.5}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px} .chip{font-size:13px;padding:7px 10px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);border-radius:999px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0} .kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px} .kpi b{display:block;font-size:29px;letter-spacing:-.03em} .kpi span{color:var(--muted);font-size:13px;line-height:1.4}
+.alert{background:var(--redbg);border:1px solid #fecdca;color:#7a271a;border-radius:16px;padding:15px 16px;margin-bottom:14px;line-height:1.45} .alert strong{color:#912018}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0} .tab{border:1px solid var(--line);background:#fff;color:var(--slate);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer} .tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.controls{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px} input,select,button{font:inherit} input,select{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff} input{flex:1;min-width:240px} select{min-width:190px} .btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer} .btn:hover{background:#f8fafc} .count{margin-left:auto;color:var(--muted);font-size:13px;align-self:center}
+.table-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden} .scroll{overflow:auto;max-height:68vh} table{width:100%;border-collapse:collapse;min-width:960px} th,td{padding:11px 13px;border-bottom:1px solid var(--line);text-align:left} th{background:#eef4ff;color:#233876;font-size:11px;text-transform:uppercase;letter-spacing:.055em;position:sticky;top:0;z-index:1} td{font-size:13px} tr:hover td{background:#fbfdff} .plate{font-weight:800;letter-spacing:.04em} .num{text-align:right;font-variant-numeric:tabular-nums}
+.badge{font-weight:700;border-radius:999px;padding:5px 8px;font-size:11px;display:inline-block;white-space:nowrap} .b-red{background:var(--redbg);color:var(--red)} .b-amber{background:var(--amberbg);color:var(--amber)} .b-green{background:var(--greenbg);color:var(--green)} .b-slate{background:var(--slatebg);color:var(--slate)}
+.note{margin-top:14px;color:var(--muted);font-size:13px;line-height:1.55} .mini{color:var(--muted);font-size:12px} .hidden{display:none}
+@media(max-width:840px){.kpis{grid-template-columns:repeat(2,1fr)}} @media(max-width:500px){.kpis{grid-template-columns:1fr} .wrap{padding:14px 10px 30px} .hero{border-radius:16px;padding:20px} .count{width:100%;margin-left:0}}
+@media print{body{background:#fff} .hero{box-shadow:none} .tabs,.controls{display:none} .scroll{max-height:none;overflow:visible} .table-card{border:none} table{min-width:0} th{position:static}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<h1>Auditoria de inadimplentes — APROVEC</h1>
+<p>Recorte voltado para identificar veículos marcados como inadimplentes apesar de terem realizado pagamento recentemente. Cancelados ficam fora da análise principal porque o pagamento pode estar relacionado ao encerramento do vínculo.</p>
+<div class="chips"><span class="chip">Referência: 03/09/2026</span><span class="chip">Pagamento recente: 04/08/2026 a 03/09/2026</span><span class="chip">Critério: até 30 dias desde o último pagamento</span></div>
+</section>
+<section class="kpis">
+<div class="kpi"><b>285</b><span>inadimplentes com pagamento nos últimos 30 dias</span></div>
+<div class="kpi"><b>279</b><span>inadimplentes recentes com pelo menos 1 boleto em aberto</span></div>
+<div class="kpi"><b>6</b><span>críticos: inadimplente + pagamento recente + 0 boletos</span></div>
+<div class="kpi"><b>274</b><span>cancelados com pagamento recente, separados da análise</span></div>
+</section>
+<div class="alert"><strong>Prioridade de auditoria:</strong> os 6 veículos com situação de inadimplência, pagamento dentro dos últimos 30 dias e nenhum boleto em aberto. Eles apresentam a maior chance de inconsistência de status ou regra operacional.</div>
+<nav class="tabs" aria-label="Grupos da auditoria">
+<button class="tab active" data-tab="inad">Inadimplentes recentes (285)</button>
+<button class="tab" data-tab="crit">Críticos — 0 boletos (6)</button>
+<button class="tab" data-tab="cancel">Cancelados — excluídos (274)</button>
+</nav>
+<div class="controls">
+<input id="q" placeholder="Buscar por placa, código ou chassi">
+<select id="status"><option value="all">Todas as situações</option></select>
+<select id="boletos"><option value="all">Todos os boletos</option><option value="0">0 boletos</option><option value="1+">1 ou mais boletos</option></select>
+<button class="btn" id="csv">Exportar CSV visível</button><span class="count" id="count"></span>
+</div>
+<section class="table-card"><div class="scroll"><table><thead><tr><th>#</th><th>Placa</th><th>Último pagamento</th><th>Dias</th><th>Situação</th><th class="num">Boletos abertos</th><th>Cód. veículo</th><th>Vencimento</th><th>Observação</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
+<p class="note"><strong>Leitura:</strong> pagamento recente não significa automaticamente que o veículo deveria estar ativo; por isso, os 279 casos com boletos em aberto ainda precisam de conferência do vencimento dessas cobranças. Os 274 cancelados foram mantidos em aba própria e não entram na prioridade principal. A página não expõe o nome do associado.</p>
+</div>
+<script>
+let DATA={inad:[],crit:[],cancel:[]};
+let current='inad'; let visible=[];
+const q=document.getElementById('q'), status=document.getElementById('status'), boletos=document.getElementById('boletos'), tbody=document.getElementById('tbody'), count=document.getElementById('count');
+function badgeDias(d){return d<=7?'b-red':d<=15?'b-amber':'b-green'}
+function fillStatus(){const vals=[...new Set(DATA[current].map(r=>r.situacao))].sort();status.innerHTML='<option value="all">Todas as situações</option>'+vals.map(v=>`<option>${v}</option>`).join('')}
+function obs(r){if(current==='crit')return r.chassi?`Sem placa · Chassi ${r.chassi}`:'Prioridade máxima de auditoria'; if(current==='cancel')return 'Cancelado — fora da análise principal'; return r.abertos===0?'Sem boleto em aberto':'Conferir se os boletos abertos estão vencidos ou são futuros'}
+function render(){const term=q.value.trim().toLowerCase(), st=status.value, bf=boletos.value;visible=DATA[current].filter(r=>{const hay=(r.placa+' '+r.cod+' '+(r.chassi||'')+' '+r.situacao).toLowerCase();const m=hay.includes(term);const s=st==='all'||r.situacao===st;const b=bf==='all'||(bf==='0'?r.abertos===0:r.abertos>0);return m&&s&&b});tbody.innerHTML=visible.map((r,i)=>`<tr><td>${i+1}</td><td class="plate">${r.placa}</td><td>${r.data}</td><td><span class="badge ${badgeDias(r.dias)}">${r.dias} dias</span></td><td><span class="badge b-slate">${r.situacao}</span></td><td class="num">${r.abertos}</td><td>${r.cod}</td><td>Dia ${r.venc||'—'}</td><td>${obs(r)}</td></tr>`).join('');count.textContent=visible.length+' resultado(s)'}
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');current=btn.dataset.tab;q.value='';boletos.value='all';fillStatus();render()}));q.addEventListener('input',render);status.addEventListener('change',render);boletos.addEventListener('change',render);
+document.getElementById('csv').addEventListener('click',()=>{const esc=v=>'"'+String(v??'').replaceAll('"','""')+'"';const header=['Placa','Ultimo pagamento','Dias','Situacao','Boletos abertos','Cod veiculo','Vencimento','Chassi se sem placa'];const lines=[header.map(esc).join(';'),...visible.map(r=>[r.placa,r.data,r.dias,r.situacao,r.abertos,r.cod,r.venc,r.chassi||''].map(esc).join(';'))];const blob=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`aprovec_${current}_2026-09-03.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)});
+async function init(){
+  const inadFiles=['inad-1.json','inad-2.json','inad-3.json','inad-4.json','inad-5.json'];
+  const cancelFiles=['cancel-1.json','cancel-2.json','cancel-3.json','cancel-4.json','cancel-5.json'];
+  const responses=await Promise.all([...inadFiles,...cancelFiles].map(f=>fetch(f)));
+  const chunks=await Promise.all(responses.map(r=>r.json()));
+  DATA.inad=chunks.slice(0,inadFiles.length).flat();
+  DATA.crit=DATA.inad.filter(r=>r.abertos===0);
+  DATA.cancel=chunks.slice(inadFiles.length).flat();
+  fillStatus();render();
+}
+init().catch(err=>{document.getElementById('tbody').innerHTML='<tr><td colspan=9>Erro ao carregar os dados.</td></tr>'; console.error(err)});
+</script>
+</body>
+</html>
